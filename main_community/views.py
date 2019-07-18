@@ -8,7 +8,7 @@ from django.views import View
 #     return render(request,'app1/header.html')
 
 def home(request):
-    return render(request,'colorlib-regform-7/index.html')
+    return render(request,'colorlib-regform-7/login.html')
 
 
 def login(request):
