@@ -17,7 +17,7 @@ def login(request):
 
 def signup(request):
     form = Signup()
-    return render(request,'colorlib-regform-7/signup.html',{'form':form})
+    return render(request,'colorlib-regform-7/sign up.html',{'form':form})
 
 # class Signnedup(View):
 #     def get(self,request):
