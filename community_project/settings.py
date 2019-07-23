@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'start_quiz',
     'question_posting',
     'main_community',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,8 +79,13 @@ WSGI_APPLICATION = 'community_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'djongo',
+        'NAME':'connect_login_signup',
+        'HOST':'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup',
+        'USER':'Gaurav',
+        'PASSWORD':'gaurav123',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
