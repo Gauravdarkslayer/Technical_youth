@@ -6,6 +6,7 @@ from pymongo import *
 from .models import AddUser
 from django.conf import settings
 
+
 # Create your views here
 # def index(request):
 #     return render(request,'app1/header.html')
@@ -24,41 +25,24 @@ def signup(request):
 
 
 
-#mongodb Database connection
-#MONGODB_URI = 'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup'
-"""MONGODB_URI   = settings.DATABASES['default']['HOST']
-client = MongoClient(MONGODB_URI, connectTimeoutMS=30000)
-db = client.connect_login_signup
-user_records = db.userdata
-print('connected successfully')
-user_records.insert_one({'name':'bro','email':'asd@o.com','passwd':'123'})
-user_records.save()
-print('insertedddddddddddddddddddddddddddd')"""
-# print('added successfully')
-# def pushRecord(record):
-#     user_records.insert_one(record)
-
 class Signnedup(View):
 # Get data from forms
     def get(self,request):
             error = "Invalid method"
             form = Signup()
             return HttpResponse('<h1>Success</h1>')#render(request,"app1/signup.html",{'form':form,'error':error})
+
     def post(self,request):
-        print('called POST function')
         form = Signup(request.POST,request.FILES)
-        print(form)
+        
         if form.is_valid():
             print('after calling')
             mail = form.cleaned_data['email']
 
-            try:
-                 # data=request.POST.get(mail='email')
+            try:                 
                 data=AddUser.objects.get(email=mail)
-                 #print(data)
-
+                 
             except AddUser.DoesNotExist as e:
-                print('in exist')
                 p1 = form.cleaned_data['passwd']
                 p2 = form.cleaned_data['re_pass']
                 if p1 == p2:
@@ -71,14 +55,9 @@ class Signnedup(View):
                     }
                     new_obj = AddUser.objects.create(**dict)
                     new_obj.save()
-                    #print('inserting')
-                    #user_records.insert_one(dict)
-                    # pushRecord(dict)
-                    # new_user = AddUser.objects.create(**dict)
-                    print('inserted')
-                    #user_records.save()
-                    #print('saved')
-                    return HttpResponse('<h1>Success</h1>')#render(request,"app1/data.html",{'dict':dict})
+                    # return HttpResponse('<h1>Success, Now you can login</h1>')
+                    
+                    return render(request,"colorlib-regform-7/login.html",{'dict':dict})
                 else:
                     error = "Password does not match...Try again"
                     form = Signup()
@@ -92,17 +71,34 @@ class Signnedup(View):
                 error = "Invalid Form"
                 form = Signup()
                 return HttpResponse('<h1>Invalid form</h1>')# return render(request,"app1/signup.html",{'form':form,'error':error})
-# class Signnedup(View):
-#     def get(self,request):
-#         error = 'Invalid method'
-#         form=Signup()
-#         return render(request,'app1/signup1/',{'form':form})
-#
-#     def signup(self,request):
-#         form=Signup(request.POST,request.FILES)
-#         if form.is_valid():
-#             p1 = form.cleaned_data()
-#         else:
-#             error = 'Invalid password try agian'
-#             form=Signup()
-#             return render(request,'app1/signup.html',{'form':form,'error':error})
+
+
+def login1(request):
+    # print(request.POST.get)
+    form = Login(request.POST)
+    if request.method == "POST":
+        # print(form)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['passwor']
+            user = AddUser.objects.get(email=email)
+            if password == user.password:
+                request.session['email'] = email
+                # return render(request,"app1/afterlogin.html")
+                return HttpResponse("<h1>success</h1>")
+            else:
+                error = "Password does not match.."
+                form = Login()
+                return HttpResponse("<h1>Password doesnot matched</h1>")
+                # return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
+        
+        else:
+            error = "invalid form"
+            form = Login()
+            return HttpResponse("<h1>invalid form</h1>")
+            # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
+    else:
+        error = "invalid method"
+        form = Login()
+        return HttpResponse("<h1>invalid method</h1>")
+        # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})   

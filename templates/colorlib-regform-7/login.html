@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Log in</title>
     {% load static %}
     <!-- Font Icon -->
     <link rel="stylesheet" href="{% static 'main_community/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="{% static 'main_community/css/style.css' %}">
 </head>
 <body>
-
+    {% block head %}
+    {% endblock %}
+    {% if error %}
+    <h1>{{ error }}</h1>
+        {% endif %}
     <div class="main">
 
 
@@ -28,14 +32,16 @@
 
                     <div class="signin-form">
                         <h2 class="form-title">Log in</h2>
-                        <form method="POST" class="register-form" id="login-form">
+                        <form method="POST" class="register-form" id="login-form" action="/login1/">
+                            {% csrf_token %}
+                            {{ form.as_p }}
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="email" name="email" id="your_name" placeholder="Your Email"/>
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                                <input type="password" name="passwor" id="password" placeholder="Password"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
