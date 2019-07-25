@@ -4,6 +4,7 @@ from .forms import Login,Signup
 from django.views import View
 from pymongo import *
 from .models import AddUser
+from django.conf import settings
 
 # Create your views here
 # def index(request):
@@ -24,14 +25,15 @@ def signup(request):
 
 
 #mongodb Database connection
-MONGODB_URI = 'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup'
+#MONGODB_URI = 'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup'
+"""MONGODB_URI   = settings.DATABASES['default']['HOST']
 client = MongoClient(MONGODB_URI, connectTimeoutMS=30000)
 db = client.connect_login_signup
 user_records = db.userdata
 print('connected successfully')
 user_records.insert_one({'name':'bro','email':'asd@o.com','passwd':'123'})
 user_records.save()
-print('insertedddddddddddddddddddddddddddd')
+print('insertedddddddddddddddddddddddddddd')"""
 # print('added successfully')
 # def pushRecord(record):
 #     user_records.insert_one(record)
@@ -51,9 +53,9 @@ class Signnedup(View):
             mail = form.cleaned_data['email']
 
             try:
-                # data=request.POST.get(mail='email')
-                data=user_records.objects.get(email=mail)
-                print(data)
+                 # data=request.POST.get(mail='email')
+                data=AddUser.objects.get(email=mail)
+                 #print(data)
 
             except AddUser.DoesNotExist as e:
                 print('in exist')
@@ -61,19 +63,21 @@ class Signnedup(View):
                 p2 = form.cleaned_data['re_pass']
                 if p1 == p2:
                     dict = {
-                    'name' : form.cleaned_data['name'],
+                    'username' : form.cleaned_data['name'],
                     'email' : form.cleaned_data['email'],
                     'password':form.cleaned_data['passwd'],
                     # 'pic' : form.cleaned_data['pic'],
 
                     }
-                    print('inserting')
-                    user_records.insert_one(dict)
+                    new_obj = AddUser.objects.create(**dict)
+                    new_obj.save()
+                    #print('inserting')
+                    #user_records.insert_one(dict)
                     # pushRecord(dict)
                     # new_user = AddUser.objects.create(**dict)
                     print('inserted')
-                    user_records.save()
-                    print('saved')
+                    #user_records.save()
+                    #print('saved')
                     return HttpResponse('<h1>Success</h1>')#render(request,"app1/data.html",{'dict':dict})
                 else:
                     error = "Password does not match...Try again"
