@@ -2,7 +2,7 @@ from django import forms
 
 class Login(forms.Form):
     email = forms.EmailField()
-    passwor = forms.CharField(widget=forms.PasswordInput)
+    passwor = forms.CharField(widget=forms.PasswordInput) # passwor because password it's already exist name
 
 
 class Signup(forms.Form):
@@ -10,5 +10,4 @@ class Signup(forms.Form):
     email = forms.EmailField()
     passwd = forms.CharField(widget=forms.PasswordInput)
     re_pass= forms.CharField(widget=forms.PasswordInput)
-    # subButton = forms.s
     # pic = forms.ImageField()
