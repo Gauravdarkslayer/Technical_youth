@@ -16,8 +16,13 @@ def home(request):
 
 
 def login(request):
-    form = Login()
-    return render(request,'colorlib-regform-7/login.html',{'form':form})
+    if request.session.get('email'):
+        error = "Already logged in"
+        return HttpResponse('<h1>You are already logged in. Please logout first</h2>')
+        # return render(request,"app1/afterlogin.html",{'error':error})
+    else:
+        form = Login()
+        return render(request,'colorlib-regform-7/login.html',{'form':form})
 
 def signup(request):
     form = Signup()
@@ -30,18 +35,18 @@ class Signnedup(View):
     def get(self,request):
             error = "Invalid method"
             form = Signup()
-            return HttpResponse('<h1>Success</h1>')#render(request,"app1/signup.html",{'form':form,'error':error})
+            return HttpResponse('<h1>Success in get</h1>')#render(request,"app1/signup.html",{'form':form,'error':error})
 
     def post(self,request):
         form = Signup(request.POST,request.FILES)
-        
+
         if form.is_valid():
             print('after calling')
             mail = form.cleaned_data['email']
 
-            try:                 
+            try:
                 data=AddUser.objects.get(email=mail)
-                 
+
             except AddUser.DoesNotExist as e:
                 p1 = form.cleaned_data['passwd']
                 p2 = form.cleaned_data['re_pass']
@@ -56,7 +61,7 @@ class Signnedup(View):
                     new_obj = AddUser.objects.create(**dict)
                     new_obj.save()
                     # return HttpResponse('<h1>Success, Now you can login</h1>')
-                    
+
                     return render(request,"colorlib-regform-7/login.html",{'dict':dict})
                 else:
                     error = "Password does not match...Try again"
@@ -65,7 +70,8 @@ class Signnedup(View):
             else:
                 error = "User already exist..."
                 form = Signup()
-                return HttpResponse('<h1>user already exist</h1>')# return render(request,"app1/signup.html",{'form':form,'error':error})
+                # return HttpResponse('<h1>user already exist</h1>')
+                return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
 
         else:
                 error = "Invalid Form"
@@ -75,6 +81,7 @@ class Signnedup(View):
 
 def login1(request):
     # print(request.POST.get)
+    print(1_2_3*2)
     form = Login(request.POST)
     if request.method == "POST":
         # print(form)
@@ -91,7 +98,7 @@ def login1(request):
                 form = Login()
                 return HttpResponse("<h1>Password doesnot matched</h1>")
                 # return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
-        
+
         else:
             error = "invalid form"
             form = Login()
@@ -101,4 +108,9 @@ def login1(request):
         error = "invalid method"
         form = Login()
         return HttpResponse("<h1>invalid method</h1>")
-        # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})   
+        # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
+
+
+def logout(request):
+    del request.session['email']
+    return render(request,"app1/header.html")
