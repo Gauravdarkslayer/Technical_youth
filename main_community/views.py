@@ -56,8 +56,8 @@ class Signnedup(View):
                     'email' : form.cleaned_data['email'],
                     'password':form.cleaned_data['passwd'],
                     # 'pic' : form.cleaned_data['pic'],
-
                     }
+                    
                     new_obj = AddUser.objects.create(**dict)
                     new_obj.save()
                     # return HttpResponse('<h1>Success, Now you can login</h1>')
@@ -80,8 +80,6 @@ class Signnedup(View):
 
 
 def login1(request):
-    # print(request.POST.get)
-    print(1_2_3*2)
     form = Login(request.POST)
     if request.method == "POST":
         # print(form)
@@ -91,10 +89,10 @@ def login1(request):
             user = AddUser.objects.get(email=email)
             if password == user.password:
                 request.session['email'] = email
-                # return render(request,"app1/afterlogin.html")
-                return HttpResponse("<h1>success</h1>")
+                return render(request,"colorlib-regform-7/afterlogin.html")
+                # return HttpResponse("<h1>success</h1>")
             else:
-                error = "Password does not match.."
+                error = "Password does not match..."
                 form = Login()
                 return HttpResponse("<h1>Password doesnot matched</h1>")
                 # return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
@@ -113,4 +111,5 @@ def login1(request):
 
 def logout(request):
     del request.session['email']
-    return render(request,"app1/header.html")
+    # return render(request,"app1/header.html")
+    return HttpResponse('<h1 style="color:cyan;background-color:black;">You are successfully logged out...</h1>')
