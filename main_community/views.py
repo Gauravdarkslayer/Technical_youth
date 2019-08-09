@@ -86,15 +86,19 @@ def login1(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['passwor']
-            user = AddUser.objects.get(email=email)
-            if password == user.password:
-                request.session['email'] = email
-                return render(request,"colorlib-regform-7/afterlogin.html")
+            #user = AddUser.objects.get(email=email)
+            with connection.cursor() as cursor:
+                cursor.execute("select * from user where emailid='{}'".format(email))
+                data = cursor.fetchone()
+
+                if password == data[2]:
+                    request.session['email'] = email
+                    return render(request,"colorlib-regform-7/afterlogin.html")
                 # return HttpResponse("<h1>success</h1>")
-            else:
-                error = "Password does not match..."
-                form = Login()
-                return HttpResponse("<h1>Password doesnot matched</h1>")
+                else:
+                    error = "Password does not match..."
+                    form = Login()
+                    return HttpResponse("<h1>Password doesnot matched</h1>")
                 # return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
 
         else:
