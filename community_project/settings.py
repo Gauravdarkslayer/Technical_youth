@@ -78,14 +78,22 @@ WSGI_APPLICATION = 'community_project.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE':'djongo',
-        'NAME':'connect_login_signup',
-        'HOST':'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup',
-        'USER':'Gaurav',
-        'PASSWORD':'gaurav123',
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # 'default': {
+    #     'ENGINE':'djongo',
+    #     'NAME':'connect_login_signup',
+    #     'HOST':'mongodb://<Gaurav>:<gaurav123>@ds253567.mlab.com:53567/connect_login_signup',
+    #     'USER':'Gaurav',
+    #     'PASSWORD':'gaurav123',
+    #     # 'ENGINE': 'django.db.backends.sqlite3',
+    #     # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    'default':{'ENGINE': 'django.db.backends.mysql',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME' : 'technical_youth',
+        'HOST' : 'localhost',
+        'PORT' : 3306,
+        'USER' : 'root',
+        'PASSWORD' : '',
     }
 }
 

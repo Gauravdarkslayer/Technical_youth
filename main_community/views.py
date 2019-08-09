@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Login,Signup
 from django.views import View
-from pymongo import *
+# from pymongo import *
 from .models import AddUser
 from django.conf import settings
 
@@ -57,7 +57,7 @@ class Signnedup(View):
                     'password':form.cleaned_data['passwd'],
                     # 'pic' : form.cleaned_data['pic'],
                     }
-                    
+
                     new_obj = AddUser.objects.create(**dict)
                     new_obj.save()
                     # return HttpResponse('<h1>Success, Now you can login</h1>')
