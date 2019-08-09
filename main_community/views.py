@@ -5,6 +5,7 @@ from django.views import View
 # from pymongo import *
 from .models import AddUser
 from django.conf import settings
+from django.db import connection
 
 
 # Create your views here
@@ -41,7 +42,6 @@ class Signnedup(View):
         form = Signup(request.POST,request.FILES)
 
         if form.is_valid():
-            print('after calling')
             mail = form.cleaned_data['email']
 
             try:
