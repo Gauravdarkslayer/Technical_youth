@@ -16,7 +16,7 @@ def home(request):
     return render(request,'colorlib-regform-7/login.html')
 
 
-def login(request):
+def login(request): # login form delivered
     if request.session.get('email'):
         error = "Already logged in"
         return HttpResponse('<h1>You are already logged in. Please logout first</h2>')
@@ -25,13 +25,13 @@ def login(request):
         form = Login()
         return render(request,'colorlib-regform-7/login.html',{'form':form})
 
-def signup(request):
+def signup(request): # signup form delivered
     form = Signup()
     return render(request,'colorlib-regform-7/sign up.html')#,{'form':form})
 
 
 
-class Signnedup(View):
+class Signnedup(View): 
 # Get data from forms
     def get(self,request):
             error = "Invalid method"
@@ -42,36 +42,38 @@ class Signnedup(View):
         form = Signup(request.POST,request.FILES)
 
         if form.is_valid():
-            mail = form.cleaned_data['email']
+            mail = form.cleaned_data['email']            
+                # print("got here")
+            
+            with connection.cursor() as cursor:
+                current_user=cursor.execute("select *from user where emailid='{}'".format(mail))
+                if current_user == 0:
+                    p1 = form.cleaned_data['passwd']
+                    p2 = form.cleaned_data['re_pass']
+                    if p1 == p2:
+                        dict = {
+                        'username' : form.cleaned_data['name'],
+                        'email' : form.cleaned_data['email'],
+                        'password':form.cleaned_data['passwd'],
+                        # 'pic' : form.cleaned_data['pic'],
+                        }
+                        # username=form.cleaned_data['name']
+                        # email = form.cleaned_data['email']
+                        # password=form.cleaned_data['passwd']
+                        with connection.cursor() as cursor:
+                            cmd="insert into user(emailid,username,password) values('{}','{}','{}')".format(dict['email'],dict['username'],dict['password'])
+                            cursor.execute(cmd)                
 
-            try:
-                data=AddUser.objects.get(email=mail)
-
-            except AddUser.DoesNotExist as e:
-                p1 = form.cleaned_data['passwd']
-                p2 = form.cleaned_data['re_pass']
-                if p1 == p2:
-                    dict = {
-                    'username' : form.cleaned_data['name'],
-                    'email' : form.cleaned_data['email'],
-                    'password':form.cleaned_data['passwd'],
-                    # 'pic' : form.cleaned_data['pic'],
-                    }
-
-                    new_obj = AddUser.objects.create(**dict)
-                    new_obj.save()
-                    # return HttpResponse('<h1>Success, Now you can login</h1>')
-
-                    return render(request,"colorlib-regform-7/login.html",{'dict':dict})
+                        return render(request,"colorlib-regform-7/login.html",{'dict':dict})
+                    else:
+                        error = "Password does not match...Try again"
+                        form = Signup()
+                        return HttpResponse('<h1>password not matched</h1>')# return render(request,"app1/signup.html",{'form':form,'error':error})
                 else:
-                    error = "Password does not match...Try again"
+                    error = "User already exist..."
                     form = Signup()
-                    return HttpResponse('<h1>password not matched</h1>')# return render(request,"app1/signup.html",{'form':form,'error':error})
-            else:
-                error = "User already exist..."
-                form = Signup()
-                # return HttpResponse('<h1>user already exist</h1>')
-                return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
+                    # return HttpResponse('<h1>user already exist</h1>')
+                    return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
 
         else:
                 error = "Invalid Form"
@@ -94,7 +96,6 @@ def login1(request):
                 if password == data[2]:
                     request.session['email'] = email
                     return render(request,"colorlib-regform-7/afterlogin.html")
-                # return HttpResponse("<h1>success</h1>")
                 else:
                     error = "Password does not match..."
                     form = Login()
