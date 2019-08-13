@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .forms import Login,Signup
 from django.views import View
 # from pymongo import *
-from .models import AddUser
+# from .models import AddUser
 from django.conf import settings
 from django.db import connection
 
@@ -36,7 +36,8 @@ class Signnedup(View):
     def get(self,request):
             error = "Invalid method"
             form = Signup()
-            return HttpResponse('<h1>Success in get</h1>')#render(request,"app1/signup.html",{'form':form,'error':error})
+            return HttpResponse('<h1>Success in get</h1>')
+            #render(request,"app1/signup.html",{'form':form,'error':error})
 
     def post(self,request):
         form = Signup(request.POST,request.FILES)
@@ -68,7 +69,8 @@ class Signnedup(View):
                     else:
                         error = "Password does not match...Try again"
                         form = Signup()
-                        return HttpResponse('<h1>password not matched</h1>')# return render(request,"app1/signup.html",{'form':form,'error':error})
+                        #return HttpResponse('<h1>password not matched</h1>')
+                        return render(request,"app1/signup.html",{'form':form,'error':error})
                 else:
                     error = "User already exist..."
                     form = Signup()
@@ -95,26 +97,38 @@ def login1(request):
 
                 if password == data[2]:
                     request.session['email'] = email
-                    return render(request,"colorlib-regform-7/afterlogin.html")
+                    if data[10]=='N':
+                        cursor.execute(f"update user set profilesetup='Y' where emailid='{email}'")
+                        car=request.POST.get('car') ###################KYA LIKHU IDAR
+                        print("this is here",car)
+                        return render(request,"colorlib-regform-7/browseinterest.html")
+                    else:
+                        return render(request,"colorlib-regform-7/afterlogin.html")
                 else:
                     error = "Password does not match..."
                     form = Login()
-                    return HttpResponse("<h1>Password doesnot matched</h1>")
-                # return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
+                    #return HttpResponse("<h1>Password doesnot matched</h1>")
+                    return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
 
         else:
-            error = "invalid form"
+            error = "Please Enter Valid Information"
             form = Login()
-            return HttpResponse("<h1>invalid form</h1>")
-            # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
+            #return HttpResponse("<h1>invalid form</h1>")
+            return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
     else:
         error = "invalid method"
         form = Login()
-        return HttpResponse("<h1>invalid method</h1>")
-        # return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
+        #return HttpResponse("<h1>invalid method</h1>")
+        return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
 
 
 def logout(request):
     del request.session['email']
     # return render(request,"app1/header.html")
-    return HttpResponse('<h1 style="color:cyan;background-color:black;">You are successfully logged out...</h1>')
+    #return HttpResponse('<h1 style="color:cyan;background-color:black;">You are successfully logged out...</h1>')
+    return render(request,"colorlib-regform-7/login.html")
+
+
+def getInterest(request):
+    car=request.post.get('car') ###################KYA LIKHU IDAR
+    print("this is here",car)
