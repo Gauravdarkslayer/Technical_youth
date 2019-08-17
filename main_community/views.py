@@ -58,9 +58,7 @@ class Signnedup(View):
                         'password':form.cleaned_data['passwd'],
                         # 'pic' : form.cleaned_data['pic'],
                         }
-                        # username=form.cleaned_data['name']
-                        # email = form.cleaned_data['email']
-                        # password=form.cleaned_data['passwd']
+                        
                         with connection.cursor() as cursor:
                             cmd="insert into user(emailid,username,password) values('{}','{}','{}')".format(dict['email'],dict['username'],dict['password'])
                             cursor.execute(cmd)                
@@ -86,21 +84,20 @@ class Signnedup(View):
 def login1(request):
     form = Login(request.POST)
     if request.method == "POST":
-        # print(form)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['passwor']
-            #user = AddUser.objects.get(email=email)
             with connection.cursor() as cursor:
                 cursor.execute("select * from user where emailid='{}'".format(email))
                 data = cursor.fetchone()
-
+                print(data)
+                if data == None:
+                    error = "User doesn't exist"
+                    return render(request,"colorlib-regform-7/login.html",{'error':error})
                 if password == data[2]:
                     request.session['email'] = email
                     if data[10]=='N':
                         cursor.execute(f"update user set profilesetup='Y' where emailid='{email}'")
-                        car=request.POST.get('car') ###################KYA LIKHU IDAR
-                        print("this is here",car)
                         return render(request,"colorlib-regform-7/browseinterest.html")
                     else:
                         return render(request,"colorlib-regform-7/afterlogin.html")
@@ -108,7 +105,7 @@ def login1(request):
                     error = "Password does not match..."
                     form = Login()
                     #return HttpResponse("<h1>Password doesnot matched</h1>")
-                    return render(request,"colorlib-regform-7/login.html",{'form':form,'error':error})
+                    return render(request,"colorlib-regform-7/login.html",{'error':error})#,{'form':form,'error':error})
 
         else:
             error = "Please Enter Valid Information"
@@ -128,7 +125,31 @@ def logout(request):
     #return HttpResponse('<h1 style="color:cyan;background-color:black;">You are successfully logged out...</h1>')
     return render(request,"colorlib-regform-7/login.html")
 
+# Function called in interest screen
+def getinterest(request):
+    INTEREST_PYTHON=request.POST.get('python') 
+    print("this is here",INTEREST_PYTHON)
+    INTEREST_CPP=request.POST.get('c++') 
+    print("this is here",INTEREST_CPP)
+    INTEREST_VFX=request.POST.get('vfx') 
+    print("this is here",INTEREST_VFX)
+    INTEREST_JAVA=request.POST.get('java') 
+    print("this is here",INTEREST_JAVA)
+    INTEREST_ANDROID=request.POST.get('android') 
+    print("this is here",INTEREST_ANDROID)
+    INTEREST_PHP=request.POST.get('php') 
+    print("this is here",INTEREST_PHP)
+    INTEREST_NODEjs=request.POST.get('node') 
+    print("this is here",INTEREST_NODEjs)
+    INTEREST_GO=request.POST.get('go') 
+    print("this is here",INTEREST_GO)
+    INTEREST_CSHARP=request.POST.get('csharp') 
+    print("this is here",INTEREST_CSHARP)
 
-def getInterest(request):
-    car=request.post.get('car') ###################KYA LIKHU IDAR
-    print("this is here",car)
+    # ml = request.POST.get('ML')
+    # print("This is 2nd item",ml)
+    with connection.cursor() as cursor:
+        mail=request.session['email'] #Getting current user email
+        CURRENT_USER_ID=cursor.execute("select id from user where emailid='{}'".format(mail))
+        cursor.execute("insert into getinterest(userid,interestid) values('{}','{}')".format(CURRENT_USER_ID,INTEREST_PYTHON))
+    return HttpResponse('<h1>Interest getted</h1>')
