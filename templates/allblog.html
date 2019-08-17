@@ -1,0 +1,16 @@
+<html>
+    <head>
+    <!-- {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app1/abc.css' %}"> -->
+    </head>
+    <body>
+        {% block head %}
+        {% endblock %}
+        {% if error %}
+        <h1>{{ error }}</h1>
+        {% endif %}
+        {% for obj in all %}
+        <h3>{{ obj }}<h3>
+        {% endfor %}
+    </body>
+</html>
