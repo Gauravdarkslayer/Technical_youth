@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <title>Final Project</title>
+      <meta charset="utf-8">
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <title>Hello, world!</title>
+
+    <style>
+       .heading{
+        width: auto;
+        margin-right: 28px;
+        margin-left: 31px;
+        padding-bottom: 50px;
+        padding-left: 10px;
+        box-shadow: -1px 3px 3px 0 #000;
+        -webkit-filter: grayscale(100%);
+        filter:grayscale(100%);
+        -webkit-transform: skew(0deg,0deg);
+        -ms-transform: skew(0deg,0deg);
+        transform:skew(0deg,0deg);
+        -webkit-transition: opacity 200ms ease;
+        transition:opacity 200ms ease;
+        font-family: "Changa One", Impact, sans-serif;
+    }
+    .div-block{
+        margin-top:29px;
+        margin-right: 30px;
+        margin-left: 30px;
+        padding:37px 81px 74px 83px;
+        box-shadow:3px 3px 20px 2px #6DABE4;
+    }
+    .textarea{
+        padding-bottom: 79px;
+        padding-top: 8px;
+        padding-left: 12px;
+        padding-right:300px;
+        margin-bottom: 10px;
+        font-weight: 400;
+        font-size:14px;
+        color:#333;
+    }
+    .submit-button{
+        position: absolute;
+        margin-top: 14px;
+        margin-right: 1px;
+        margin-left: 271px;
+        padding-right: 150px;
+        padding-left: 150px;
+        border: 1px none #000;
+        background-color: #6DABE4;
+        box-shadow: 3px 3px 10px 2px #000;
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform:scale(1.2);
+        font-family:'Changa One',Impact,sans-serif;
+        font-weight:400;
+        text-align:center;
+        text-shadow:3px 3px 3px #000;
+        cursor:pointer;
+        
+    }
+    .form{
+        padding-bottom: 94px;
+        
+    }
+    .submit-button-2{
+        width: auto;
+        margin-top: 15px;
+        padding-right: 50px;
+        padding-left:51px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        border:0px solid #000;
+        border-radius: 11px;
+        background-color: #6DABE4;
+        box-shadow:4px 4px 3px 0 black;
+        -webkit-transform:translate(0px,0px);
+        -ms-transform: translate(0px,0px);
+        transform:translate(0px,0px);
+        font-family:'Changa One',Impact,sans-serif;
+        text-shadow:2px 2px 2px #000;
+        color:aliceblue;
+    }
+    #name{
+        padding-right: 305px;
+        padding-bottom: 10px;
+        padding-top: 8px;
+        padding-left: 12px;
+        margin-bottom: 10px;
+        font-weight: 400;
+        font-size:14px;
+        color:#333;
+    }
+    #label{
+        width: auto;
+        padding-bottom:10px;
+        font-size: 20px;
+        font-family:'Changa One',Impact,sans-serif;
+    }
+    .form-control
+    {
+        
+    }
+    </style>
+  </head>
+ 
+  <h1 class="heading">Technical Youth</h1>
+  <div class='div-block'>
+      <div class='w-form'>
+          <form  action="/post_it/" id='email-form' name='email-form'  class='form' method="POST">
+             {% csrf_token %}
+             {{ form.as_p }}
+              <label for="name" id='label'>Enter Question</label><br><br>
+              <input type="email" class="form-control" name="question_field"  placeholder="Question" aria-describedby="emailHelp" placeholder="Enter email"><br><br>
+              <label for="email" id ='label'>Enter Question Description</label><br><br>
+              <textarea  class="form-control" name='field' maxlength='5000' id='field' placeholder = 'Description'   ></textarea><br><br>
+              <input type='submit' value='Submit' data-wait="Please wait..." class='submit-button-2 w-button'>
+          </form>
+          <!--<div class='w-form-done'>
+              <div>
+                  Thank you! Your Submission has been received!
+              </div>
+          </div>
+          <div class='w-form-fail'>
+              <div>Oops! Something went wrong while submitting the form.</div>
+          </div>-->
+      </div>
+  </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+      
+  </body>
+</html>

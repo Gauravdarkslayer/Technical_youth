@@ -174,7 +174,7 @@ def getinterest(request):
         insert(INTEREST_GO)
     if INTEREST_CSHARP:
         insert(INTEREST_CSHARP)
-    return HttpResponse('<h1>Interest getted</h1>')
+    return render(request,'allblog.html')
 
     # ml = request.POST.get('ML')
     # print("This is 2nd item",ml)
