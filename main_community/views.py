@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Login,Signup
 from django.views import View
+from django.core.mail import send_mail
+from random import randint
 # from pymongo import *
 # from .models import AddUser
 from django.conf import settings
@@ -172,8 +174,18 @@ def getinterest(request):
         insert(INTEREST_GO)
     if INTEREST_CSHARP:
         insert(INTEREST_CSHARP)
-    return render('<h1>Interest getted</h1>')
+    return HttpResponse('<h1>Interest getted</h1>')
 
     # ml = request.POST.get('ML')
     # print("This is 2nd item",ml)
+
+
+def forgot(request):
+    to_email = request.POST.get('email')#"devanshsoni108@gmail.com"
+    from_email = "simrangrover5@gmail.com"
+    subject = "OTP"
+    otp = str(randint(1000,9999))
+    message = "Otp for password change please dont share with anyone  "+otp
+    send_mail(subject,message,from_email,(to_email,),auth_password=settings.EMAIL_HOST_PASSWORD)
+    return HttpResponse("Success")
     
