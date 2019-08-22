@@ -121,7 +121,7 @@
              {% csrf_token %}
              {{ form.as_p }}
               <label for="name" id='label'>Enter Question</label><br><br>
-              <input type="email" class="form-control" name="question_field"  placeholder="Question" aria-describedby="emailHelp" placeholder="Enter email"><br><br>
+              <input type="text" class="form-control" name="question_field"  placeholder="Question" aria-describedby="emailHelp" placeholder="Enter email"><br><br>
               <label for="email" id ='label'>Enter Question Description</label><br><br>
               <textarea  class="form-control" name='field' maxlength='5000' id='field' placeholder = 'Description'   ></textarea><br><br>
               <input type='submit' value='Submit' data-wait="Please wait..." class='submit-button-2 w-button'>

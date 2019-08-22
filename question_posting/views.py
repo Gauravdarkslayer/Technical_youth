@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db import connection
 from django.http import HttpResponse
-from django.forms import Form
+
 # Create your views here.
 
 def all_posts(request):
@@ -9,6 +9,7 @@ def all_posts(request):
         cursor.execute("select post from posts")
         blogs=cursor.fetchall()
         b=[]
+        print("All posts function called")
         for var in blogs:
             dict={
                 'post':var

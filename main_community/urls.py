@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 urlpatterns = [
     path('',views.home),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/',views.logout),
     path('getinterest/',views.getinterest),
     path('forgot/',views.forgot),
+    path('',include('question_posting.urls'))
 
 ]

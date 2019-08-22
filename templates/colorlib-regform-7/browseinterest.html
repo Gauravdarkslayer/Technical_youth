@@ -27,7 +27,7 @@
     <script type="text/javascript" src="{% static 'question_posting/bootstrap/js/bootstrap.min.js' %}"></script>
 </head>
 <body id="box">
-    <form action="/getinterest/" method="POST">
+    <form action="/all_posts/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
 <div>

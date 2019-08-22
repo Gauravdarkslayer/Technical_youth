@@ -4,10 +4,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app1/abc.css' %}"> -->
     </head>
     <body>
-        <form action="/question_post/" method="GET">
+        <form action="/question_post/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-        <input type="submit" >
+        
         {% block head %}
         {% endblock %}
         {% if error %}
@@ -16,6 +16,8 @@
         {% for obj in all %}
         <h3>{{ obj }}<h3>
         {% endfor %}
+        <!-- <input type="submit"> -->
+        <button type="submit">submit</button>
         </form>
     </body>
 </html>
