@@ -8,7 +8,12 @@ urlpatterns = [
     path('signup1/',views.Signnedup.as_view()),
     path('logout/',views.logout),
     path('getinterest/',views.getinterest),
-    path('forgot/',views.forgot),
+
+    path('forgot/',views.render_forgot_template),
+    path('forgots/',views.forgots),
+    path('getotp/',views.getotp),
+    path('updatePassword/',views.updatePassword),
+
     path('',include('question_posting.urls'))
 
 ]

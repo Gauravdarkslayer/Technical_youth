@@ -12,9 +12,10 @@ def all_posts(request):
         print("All posts function called")
         for var in blogs:
             dict={
-                'post':var
+                'post':"".join(var)
             }
-            b.append(var)
+            b.append(dict['post'])
+            print(b)
         return render(request,"allblog.html",{'all':b})    
 
 def question_post(request):

@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>enter otp</title>
+    </head>
+    <body>
+        <form action="/getotp/" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <label>Enter the otp you received on your email</label><input type="text" name="otp">
+            <input type="submit">
+        </form>
+    </body>
+</html>

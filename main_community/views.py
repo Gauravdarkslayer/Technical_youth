@@ -2,17 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Login,Signup
 from django.views import View
-from django.core.mail import send_mail
 from random import randint
-# from pymongo import *
-# from .models import AddUser
 from django.conf import settings
 from django.db import connection
+import smtplib
 
-
-# Create your views here
-# def index(request):
-#     return render(request,'app1/header.html')
 
 def home(request):
     return render(request,'colorlib-regform-7/login.html')
@@ -68,13 +62,9 @@ class Signnedup(View):
                         return render(request,"colorlib-regform-7/login.html",{'dict':dict})
                     else:
                         error = "Password does not match...Try again"
-                        # form = Signup()
-                        #return HttpResponse('<h1>password not matched</h1>')
                         return render(request,"colorlib-regform-7/sign up.html",{'error':error})
                 else:
                     error = "User already exist..."
-                    # form = Signup()
-                    # return HttpResponse('<h1>user already exist</h1>')
                     return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
 
         else:
@@ -178,14 +168,71 @@ def getinterest(request):
 
     # ml = request.POST.get('ML')
     # print("This is 2nd item",ml)
+myotp=""
+def render_forgot_template(request):
+    return render(request,'colorlib-regform-7/forgot.html')
+
+otp=randint(1000,9999)
+myemail=""
+
+def forgots(request):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login('www.gaurav10bhojwani@gmail.com','inuajyeavvhhcxfo')
+    subject="otp for technical youth"
+    body="DO NOT SHARE THIS OTP WITH ANYONE"+" "+str(otp)
+    msg=f'subject: {subject}\n\n{body}'
+    global myemail
+    server.sendmail(
+            'www.gaurav10bhojwani@gmail.com',
+             request.POST.get('email'),
+            # 'gaurav10me@gmail.com',
+            msg
+        )   
+    myemail=request.POST.get('email')    
+    print("sent successfully")
+    server.quit()
+    return render(request,'colorlib-regform-7/enterotp.html')
+
+def getotp(request):
+    if str(otp) == request.POST.get('otp'):
+        # return HttpResponse("OK OTP matched")
+        return render(request,'colorlib-regform-7/newpassword.html')
+    else:
+        return HttpResponse("Otp does'nt match, Please try again later")
+
+def updatePassword(request):
+    p1=request.POST.get('newpass')
+    p2=request.POST.get('confirmpass')
+    if p1==p2:
+        with connection.cursor() as cursor:
+            global myemail
+            cursor.execute("UPDATE user SET password = '{}' where emailid = '{}'".format(p1,myemail))
+            return HttpResponse("Password changed successfully, you can now return to login page")
+            return render(request,'colorlib-regform-7/login.html')
+    else:
+        return HttpResponse('new password and confirm password does\'nt matched')        
 
 
-def forgot(request):
-    to_email = request.POST.get('email')#"devanshsoni108@gmail.com"
-    from_email = "simrangrover5@gmail.com"
-    subject = "OTP"
-    otp = str(randint(1000,9999))
-    message = "Otp for password change please dont share with anyone  "+otp
-    send_mail(subject,message,from_email,(to_email,),auth_password=settings.EMAIL_HOST_PASSWORD)
-    return HttpResponse("Success")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
