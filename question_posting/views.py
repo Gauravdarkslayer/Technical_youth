@@ -9,7 +9,7 @@ def all_posts(request):
         cursor.execute("select post from posts")
         blogs=cursor.fetchall()
         b=[]
-        print("All posts function called")
+        # print("All posts function called")
         for var in blogs:
             dict={
                 'post':"".join(var)
@@ -32,3 +32,7 @@ def postnewquestion(request):
         qry="insert into posts (post,userid) values ('{}','{}')".format(question,*id)
         cursor.execute(qry)
         return HttpResponse("Ho gya bhyi")  
+
+
+def post_answer(request):
+    return render(request,"dialogbox.html")        

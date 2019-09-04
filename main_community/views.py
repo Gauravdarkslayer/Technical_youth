@@ -82,7 +82,7 @@ def login1(request):
             with connection.cursor() as cursor:
                 cursor.execute("select * from user where emailid='{}'".format(email))
                 data = cursor.fetchone()
-                print(data)
+                # print(data)
                 if data == None:
                     error = "User doesn't exist"
                     return render(request,"colorlib-regform-7/login.html",{'error':error})
@@ -92,7 +92,19 @@ def login1(request):
                         cursor.execute(f"update user set profilesetup='Y' where emailid='{email}'")
                         return render(request,"colorlib-regform-7/browseinterest.html")
                     else:
-                        return render(request,"colorlib-regform-7/afterlogin.html")
+                        # return render(request,"colorlib-regform-7/afterlogin.html")
+                        with connection.cursor() as cursor:
+                            cursor.execute("select post from posts")
+                            blogs=cursor.fetchall()
+                            b=[]
+                            # print("All posts function called")
+                            for var in blogs:
+                                dict={
+                                    'post':"".join(var)
+                                }
+                                b.append(dict['post'])
+                                print(b)
+                            return render(request,"allblog.html",{'all':b})    
                 else:
                     error = "Password does not match..."
                     form = Login()
