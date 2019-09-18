@@ -3,6 +3,7 @@
         <title>Forgot password</title>
     </head>
     <body>
+        {% include "navgaurav.html" %}
         <form action="/forgots/" method ="POST">
             {% csrf_token %}
             {{ form.as_p }}

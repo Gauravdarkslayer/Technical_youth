@@ -3,6 +3,7 @@
         <title>enter otp</title>
     </head>
     <body>
+        {% include "navgaurav.html" %}
         <form action="/getotp/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}

@@ -3,9 +3,12 @@ from django.http import HttpResponse
 from .forms import Login,Signup
 from django.views import View
 from random import randint
+from django.template import RequestContext
+
 from django.conf import settings
-from django.db import connection
+# from django.db import connection
 import smtplib
+import pymysql as sql
 
 
 def home(request):
@@ -13,7 +16,8 @@ def home(request):
 
 
 def login(request): # login form delivered
-    if request.session.get('email'):
+    response=HttpResponse("Cookie Set")
+    if response.COOKIES.get('email'):
         error = "Already logged in"
         return HttpResponse('<h1>You are already logged in. Please logout first</h2>')
         # return render(request,"app1/afterlogin.html",{'error':error})
@@ -27,7 +31,7 @@ def signup(request): # signup form delivered
 
 
 
-class Signnedup(View): 
+class Signnedup(View):
 # Get data from forms
     def get(self,request):
             error = "Invalid method"
@@ -39,33 +43,38 @@ class Signnedup(View):
         form = Signup(request.POST,request.FILES)
 
         if form.is_valid():
-            mail = form.cleaned_data['email']            
+            mail = form.cleaned_data['email']
                 # print("got here")
-            
-            with connection.cursor() as cursor:
-                current_user=cursor.execute("select *from user where emailid='{}'".format(mail))
-                if current_user == 0:
-                    p1 = form.cleaned_data['passwd']
-                    p2 = form.cleaned_data['re_pass']
-                    if p1 == p2:
-                        dict = {
-                        'username' : form.cleaned_data['name'],
-                        'email' : form.cleaned_data['email'],
-                        'password':form.cleaned_data['passwd'],
-                        # 'pic' : form.cleaned_data['pic'],
-                        }
-                        
-                        with connection.cursor() as cursor:
-                            cmd="insert into user(emailid,username,password) values('{}','{}','{}')".format(dict['email'],dict['username'],dict['password'])
-                            cursor.execute(cmd)                
-
-                        return render(request,"colorlib-regform-7/login.html",{'dict':dict})
-                    else:
-                        error = "Password does not match...Try again"
-                        return render(request,"colorlib-regform-7/sign up.html",{'error':error})
+            db = sql.connect(host='localhost',port=3306,database='techinal_youth',user="root",password='')
+            cursor = db.cursor()
+            #with connection.cursor() as cursor:
+            cursor.execute("select * from user where emailid='{}'".format(mail))
+            current_user = cursor.fetchone()
+            print(current_user)
+            if current_user == None:
+                p1 = form.cleaned_data['passwd']
+                p2 = form.cleaned_data['re_pass']
+                if p1 == p2:
+                    dict = {
+                    'username' : form.cleaned_data['name'],
+                    'email' : form.cleaned_data['email'],
+                    'password':form.cleaned_data['passwd'],
+                    # 'pic' : form.cleaned_data['pic'],
+                    }
+                    print(dict)
+                    #with connection.cursor() as cursor:
+                    db = sql.connect(host='localhost',port=3306,database='techinal_youth',user="root",password='')
+                    cursor = db.cursor()
+                    cmd="insert into user(emailid,username,password) values('{}','{}','{}')".format(dict['email'],dict['username'],dict['password'])
+                    cursor.execute(cmd)
+                    db.commit()
+                    return render(request,"colorlib-regform-7/login.html",{'dict':dict})
                 else:
-                    error = "User already exist..."
-                    return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
+                    error = "Password does not match...Try again"
+                    return render(request,"colorlib-regform-7/sign up.html",{'error':error})
+            else:
+                error = "User already exist..."
+                return render(request,"colorlib-regform-7/login.html",{'error':error})#'form':form,
 
         else:
                 error = "Invalid Form"
@@ -76,46 +85,57 @@ class Signnedup(View):
 def login1(request):
     form = Login(request.POST)
     if request.method == "POST":
+        # print(form)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['passwor']
-            with connection.cursor() as cursor:
-                cursor.execute("select * from user where emailid='{}'".format(email))
-                data = cursor.fetchone()
-                # print(data)
-                if data == None:
-                    error = "User doesn't exist"
-                    return render(request,"colorlib-regform-7/login.html",{'error':error})
-                if password == data[2]:
-                    request.session['email'] = email
-                    if data[10]=='N':
-                        cursor.execute(f"update user set profilesetup='Y' where emailid='{email}'")
-                        return render(request,"colorlib-regform-7/browseinterest.html")
-                    else:
-                        # return render(request,"colorlib-regform-7/afterlogin.html")
-                        with connection.cursor() as cursor:
-                            cursor.execute("select post from posts")
-                            blogs=cursor.fetchall()
-                            b=[]
-                            # print("All posts function called")
-                            for var in blogs:
-                                dict={
-                                    'post':"".join(var)
-                                }
-                                b.append(dict['post'])
-                                print(b)
-                            return render(request,"allblog.html",{'all':b})    
+            db = sql.connect(host='localhost',port=3306,database='techinal_youth',user="root",password='')
+            cursor = db.cursor()
+            #with connection.cursor() as cursor:
+            cursor.execute("select * from user where emailid='{}'".format(email))
+            data = cursor.fetchone()
+            # print("yes")
+            # print(data)
+            if data == None:
+                error = "User doesn't exist"
+                return render(request,"colorlib-regform-7/login.html",{'error':error})
+            if password == data[2]:
+                # print("this is email",email)
+                # response=HttpResponse("Cookie Set")
+                # response.set_cookie('emailid',email)
+                response = render(request, 'colorlib-regform-7/browseinterest.html')
+                    # context_instance = RequestContext(request))
+                response.set_cookie('emailid',email)
+                if data[10]=='N':
+                    cursor.execute(f"update user set profilesetup='Y' where emailid='{email}'")
+                    db.commit()
+                    return response
+                    # return render(request,"colorlib-regform-7/browseinterest.html")
                 else:
-                    error = "Password does not match..."
-                    form = Login()
-                    #return HttpResponse("<h1>Password doesnot matched</h1>")
-                    return render(request,"colorlib-regform-7/login.html",{'error':error})#,{'form':form,'error':error})
+                    # return render(request,"colorlib-regform-7/afterlogin.html")
+                    #with connection.cursor() as cursor:
+                    cursor.execute("select post from posts")
+                    blogs=cursor.fetchall()
+                    b=[]
+                    # print("All posts function called")
+                    for var in blogs:
+                        dict={
+                            'post':"".join(var)
+                        }
+                        b.append(dict['post'])
+                        print(b)
+                    return render(request,"questiondisplay.html",{'all':b})
+            else:
+                error = "Password does not match..."
+                form = Login()
+                #return HttpResponse("<h1>Password doesnot matched</h1>")
+                return render(request,"colorlib-regform-7/login.html",{'error':error})#,{'form':form,'error':error})
 
         else:
             error = "Please Enter Valid Information"
             form = Login()
             #return HttpResponse("<h1>invalid form</h1>")
-            return render(request,"colorlib-regform-7/login.html",{'error':error,'form':form})
+            return render(request,"colorlib-regform-7/login.html",{'error':error})
     else:
         error = "invalid method"
         form = Login()
@@ -124,39 +144,44 @@ def login1(request):
 
 
 def logout(request):
-    del request.session['email']
+    response=HttpResponse("Cookie Set")
+    response.delete_cookie('emailid')
     # return render(request,"app1/header.html")
     #return HttpResponse('<h1 style="color:cyan;background-color:black;">You are successfully logged out...</h1>')
     return render(request,"colorlib-regform-7/login.html")
 
 # Function called in interest screen
 def getinterest(request):
-    
+
     def insert(interest):
-        with connection.cursor() as cursor:
-            mail=request.session['email'] #Getting current user email
-            print(mail)
-            cursor.execute("select id from user where emailid='{}'".format(mail))
-            CURRENT_USER_ID=cursor.fetchone()
-            print(CURRENT_USER_ID)
-            cursor.execute("insert into getinterest (userid,interestid) values({},'{}')".format(*CURRENT_USER_ID,interest))
-    INTEREST_PYTHON=request.POST.get('python') 
+        #with connection.cursor() as cursor:
+        db = sql.connect(host='localhost',port=3306,database='techinal_youth',user="root",password='')
+        cursor = db.cursor()
+        response=HttpResponse("Cookie Set")
+        mail=response.COOKIES.get('emailid') #Getting current user email
+        print(mail)
+        cursor.execute("select id from user where emailid='{}'".format(mail))
+        CURRENT_USER_ID=cursor.fetchone()
+        print(CURRENT_USER_ID)
+        cursor.execute("insert into getinterest (userid,interestid) values({},'{}')".format(*CURRENT_USER_ID,interest))
+        db.commit()
+    INTEREST_PYTHON=request.POST.get('python')
     #print("this is here",INTEREST_PYTHON)
-    INTEREST_CPP=request.POST.get('c++') 
+    INTEREST_CPP=request.POST.get('c++')
     #print("this is here",INTEREST_CPP)
-    INTEREST_VFX=request.POST.get('vfx') 
+    INTEREST_VFX=request.POST.get('vfx')
     #print("this is here",INTEREST_VFX)
-    INTEREST_JAVA=request.POST.get('java') 
+    INTEREST_JAVA=request.POST.get('java')
     #print("this is here",INTEREST_JAVA)
-    INTEREST_ANDROID=request.POST.get('android') 
+    INTEREST_ANDROID=request.POST.get('android')
     #print("this is here",INTEREST_ANDROID)
-    INTEREST_PHP=request.POST.get('php') 
+    INTEREST_PHP=request.POST.get('php')
     #print("this is here",INTEREST_PHP)
-    INTEREST_NODEjs=request.POST.get('node') 
+    INTEREST_NODEjs=request.POST.get('node')
     #print("this is here",INTEREST_NODEjs)
-    INTEREST_GO=request.POST.get('go') 
+    INTEREST_GO=request.POST.get('go')
     #print("this is here",INTEREST_GO)
-    INTEREST_CSHARP=request.POST.get('csharp') 
+    INTEREST_CSHARP=request.POST.get('csharp')
     #print("this is here",INTEREST_CSHARP)
     if INTEREST_PYTHON:
         insert(INTEREST_PYTHON)
@@ -186,7 +211,7 @@ def render_forgot_template(request):
 
 otp=randint(1000,9999)
 myemail=""
-
+# print("this is otp",otp)
 def forgots(request):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
@@ -202,13 +227,14 @@ def forgots(request):
              request.POST.get('email'),
             # 'gaurav10me@gmail.com',
             msg
-        )   
-    myemail=request.POST.get('email')    
+        )
+    myemail=request.POST.get('email')
     print("sent successfully")
     server.quit()
     return render(request,'colorlib-regform-7/enterotp.html')
 
 def getotp(request):
+    print("this is otp",otp)
     if str(otp) == request.POST.get('otp'):
         # return HttpResponse("OK OTP matched")
         return render(request,'colorlib-regform-7/newpassword.html')
@@ -219,32 +245,13 @@ def updatePassword(request):
     p1=request.POST.get('newpass')
     p2=request.POST.get('confirmpass')
     if p1==p2:
-        with connection.cursor() as cursor:
-            global myemail
-            cursor.execute("UPDATE user SET password = '{}' where emailid = '{}'".format(p1,myemail))
-            return HttpResponse("Password changed successfully, you can now return to login page")
-            return render(request,'colorlib-regform-7/login.html')
+        #with connection.cursor() as cursor:
+        db = sql.connect(host='localhost',port=3306,database='techinal_youth',user="root",password='')
+        cursor = db.cursor()
+        global myemail
+        cursor.execute("UPDATE user SET password = '{}' where emailid = '{}'".format(p1,myemail))
+        db.commit()
+        return HttpResponse("Password changed successfully, you can now return to login page")
+        return render(request,'colorlib-regform-7/login.html')
     else:
-        return HttpResponse('new password and confirm password does\'nt matched')        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+        return HttpResponse('new password and confirm password does\'nt matched')

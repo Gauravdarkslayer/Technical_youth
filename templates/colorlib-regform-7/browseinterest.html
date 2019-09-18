@@ -2,7 +2,7 @@
 <html>
 <head>
     <style>
-        #b1{
+     #b1{
          padding-top:20px;
          text-align: center;
      }
@@ -27,6 +27,7 @@
     <script type="text/javascript" src="{% static 'question_posting/bootstrap/js/bootstrap.min.js' %}"></script>
 </head>
 <body id="box">
+    {% include "navgaurav.html" %}
     <form action="/all_posts/" method="POST">
         {% csrf_token %}
         {{ form.as_p }}

@@ -3,15 +3,15 @@
   <head>
       <title>MultiSubmit </title>
       <meta charset="utf-8">
-      
+
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
+
       <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
+
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-        
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        
+
         <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <title>Submit Multiple</title>
 
@@ -41,7 +41,7 @@
 .items-collection label.btn-default{
     width:90%;
     border:1px solid #305891;
-    margin:5px; 
+    margin:5px;
     border-radius: 17px;
     color: #305891;
     padding:10px;
@@ -66,10 +66,11 @@
          text-align: center;
      }
    </style>
-  
+
 </head>
- 
+
 <body>
+    {% include "navgaurav.html" %}
     <form action="/getinterest/" method="POST">
                             {% csrf_token %}
                             {{ form.as_p }}
@@ -79,7 +80,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="items-collection">
-            
+
                             <div  class="items col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                 <div class="info-block block-info clearfix">
                                     <div data-toggle="buttons" class="btn-group bizmoduleselect">
@@ -98,7 +99,7 @@
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                                
+
                                                 <h5>Python</h5>
                                             </div>
                                         </label>
@@ -111,7 +112,7 @@
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="cpp" autocomplete="off" value="C++">
-                                        
+
                                                 <h5>C++</h5>
                                             </div>
                                         </label>
@@ -124,7 +125,7 @@
                                         <label class="btn btn-secondary">
                                             <div  id="b2" class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                      
+
                                                 <h5>C</h5>
                                             </div>
                                         </label>
@@ -137,60 +138,60 @@
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                                
+
                                                 <h5>C++</h5>
                                             </div>
                                         </label>
                                     </div>
                                 </div>
-                            </div>                
+                            </div>
                             <div  class="items col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                 <div class="info-block block-info clearfix">
                                     <div data-toggle="buttons" class="btn-group itemcontent">
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                   
+
                                                 <h5>Data Science</h5>
                                             </div>
                                         </label>
                                     </div>
                                 </div>
-                            </div>                
+                            </div>
                             <div class="items col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                 <div class="info-block block-info clearfix">
                                     <div data-toggle="buttons" class="btn-group itemcontent">
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                      
+
                                                 <h5>DBMS</h5>
                                             </div>
                                         </label>
                                     </div>
                                 </div>
-                            </div>                
+                            </div>
                             <div class="items col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                 <div class="info-block block-info clearfix">
                                     <div data-toggle="buttons" class="btn-group itemcontent">
                                         <label class="btn btn-secondary">
                                             <div class="itemcontent">
                                                 <input type="checkbox" name="var_id[]" autocomplete="off" value="">
-                                             
+
                                                 <h5>HTML/CSS/JS</h5>
                                             </div>
                                         </label>
                                     </div>
                                 </div>
-                            </div>                
-            
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <br>
-                    
-                </div>    
+
+                </div>
             </div>
             <div id="b1" >
                     <input type="submit" class="btn btn-primary btn-lg">
@@ -199,11 +200,11 @@
             #search {
                 width:90%;
             }
-            
+
             .searchicon {
                 color:#5CB85C;
             }
-            
+
             .items-collection{
                 margin:20px 0 0 0;
             }
@@ -214,7 +215,7 @@
             .items-collection label.btn-default{
                 width:90%;
                 border:1px solid #305891;
-                margin:5px; 
+                margin:5px;
                 border-radius: 17px;
                 color: #305891;
             }
@@ -225,7 +226,7 @@
                 width:90%
             }
             </style>
-            
+
             <script>
             $(function () {
                 $('#search').on('keyup', function () {
@@ -250,7 +251,7 @@ $(function () {
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-      
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
 
 </form>

@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+import dj_database_url
+# DATABASES['default'] =  dj_database_url.config()
 
 import os
 
@@ -33,7 +35,7 @@ ALLOWED_HOSTS = []
 # EMAIL_HOST_USER="simrangrover5@gmail.com"
 # EMAIL_HOST_PASSWORD="7742524047sima"
 # EMAIL_PORT=465
-# EMAIL_USE_SSL=True 
+# EMAIL_USE_SSL=True
 #DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
 # Application definition
 
@@ -85,6 +87,7 @@ WSGI_APPLICATION = 'community_project.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+    'default':dj_database_url.config()
     # 'default': {
     #     'ENGINE':'djongo',
     #     'NAME':'connect_login_signup',
@@ -94,14 +97,14 @@ DATABASES = {
     #     # 'ENGINE': 'django.db.backends.sqlite3',
     #     # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
-    'default':{'ENGINE': 'django.db.backends.mysql',
+    #'default':{'ENGINE': 'django.db.backends.mysql',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME' : 'technical_youth',
-        'HOST' : 'localhost',
-        'PORT' : 3306,
-        'USER' : 'root',
-        'PASSWORD' : '',
-    }
+        # 'NAME' : 'technical_youth',
+        # 'HOST' : 'localhost',
+        # 'PORT' : 3306,
+        # 'USER' : 'root',
+        # 'PASSWORD' : '',
+    #}
 }
 
 

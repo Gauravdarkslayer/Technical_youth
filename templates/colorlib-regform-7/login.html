@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,10 +12,12 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="{% static 'main_community/css/style.css' %}">
-</head>
-<body>
+    {% include "navgaurav.html" %}
     {% block head %}
     {% endblock %}
+</head>
+<body>
+
     {% if error %}
     <h1>{{ error }}</h1>
         {% endif %}
@@ -50,8 +53,8 @@
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
                             </div>
-                            <a href="/forgot/">FORGOT PASSWORD?</a> 
-                        
+                            <a href="/forgot/">FORGOT PASSWORD?</a>
+
                         </form>
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
@@ -63,7 +66,7 @@
                         </div>
 
                         <!-- <a href="/forgot/">FORGOT PASSWORD?</a>  -->
-                        
+
                     </div>
                 </div>
             </div>

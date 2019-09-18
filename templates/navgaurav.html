@@ -1,0 +1,74 @@
+{% block head %}
+<!doctype html>
+<html lang="en">
+  <head>
+      <title>Navigation</title>
+      <meta charset="utf-8">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'main_community/font-awesome/css/font-awesome.min.css' %}">
+    <!-- <title>Hello, world!</title> -->
+
+    <style>
+        #temp{
+            width:20px;
+        }
+
+        dropdown-item{
+          padding-right:20px;
+        }
+        #nav1{
+          background-color: #37CAF7;
+        }
+
+    </style>
+  </head>
+  <body>
+
+    <div>
+        <nav id="nav1" class="navbar navbar-light bg-faded navbar-fixed-top" id="navbar">
+            <a class="navbar-brand" href="#"><img id=temp src="https://img.icons8.com/ios-filled/50/000000/small-icons.png"></a>
+            <ul class="nav navbar-nav">
+            <form class="form-inline pull-xs-right">
+                    <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#jumbotron">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#about">Browse interest</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#footer">About Us</a>
+                            </li>
+                             <li class="nav-item">  <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img id=temp src="https://img.icons8.com/dotty/80/000000/bungalow.png">
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                      <a class="dropdown-item" href="#">My Profile</a>
+                                      <a class="dropdown-item" href="#">My Account</a>
+                                      <a class="dropdown-item" href="#">Sign Out</a>
+                                     </div>
+                                  </div></li>
+                          </ul>
+
+            </form>
+          </nav>
+        </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+
+  </body>
+</html>
+{% endblock %}

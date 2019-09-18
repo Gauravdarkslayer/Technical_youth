@@ -19,10 +19,11 @@
     </script>
     </head>
     <body>
+        {% include "navgaurav.html" %}
         <form action="/question_post/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-        
+
         {% block head %}
         {% endblock %}
         {% if error %}
