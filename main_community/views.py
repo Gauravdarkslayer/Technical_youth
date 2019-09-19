@@ -124,7 +124,7 @@ def login1(request):
                         }
                         b.append(dict['post'])
                         print(b)
-                    return render(request,"questiondisplay.html",{'all':b})
+                    return render(request,"allblog.html",{'all':b})
             else:
                 error = "Password does not match..."
                 form = Login()

@@ -17,7 +17,7 @@ def all_posts(request):
         }
         b.append(dict['post'])
         # print(b)
-    db.commit()
+    # db.commit()
     return render(request,"allblog.html",{'all':b})
 
 def question_post(request):
