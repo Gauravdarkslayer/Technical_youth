@@ -39,28 +39,42 @@
       padding-top:0px;
       }
 
-      html.gr__sololearn_com body div.wrapper.pageLayout.hasSidebar.Discuss div.content div#thread.block.nopadding div#questions div.question div.postStats
+      .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color .3s;
+  }
+
+  .pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+  }
+
+  .pagination a:hover:not(.active) {background-color: #ddd;}
+      /* html.gr__sololearn_com body div.wrapper.pageLayout.hasSidebar.Discuss div.content div#thread.block.nopadding div#questions div.question div.postStats */
 
     </style>
   </head>
   <body>
       <div class="content">
       <h5  class="card-title">Q&A Discussion</h5>
-      <h5><button  type="button" class="btn btn-primary btn-sm">New Question</button><h5>
+      <!-- <h5><button  type="button" class="btn btn-primary btn-sm">New Question</button><h5> -->
       <p><form class="form-inline my-2 my-lg-0" action="/question_post/" method="POST">
       {% csrf_token %}
       {{ form.as_p }}
+            <h5><button  class="btn btn-primary btn-sm" type="submit">New Question</button><h5>
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" >Search</button>
             </form></p></h5>
             <hr>
             {% for obj in all %}
             <div class="card" style="width: auto;">
                     <div class="card-body">
 
-
-
-                          <p>{{ obj }}</p>
+                          <p style="font-size:27px;">{{ obj }}</p>
 
                           <a class="btn btn-primary" href="#" role="button">C#</a>
 <button class="btn btn-primary" type="submit">c++</button>
@@ -75,6 +89,19 @@
       </div>
       {% endfor %}
 
+<!--Do this dynamically -->
+<div style="inline-block; text-align:center;">
+  <div class="pagination" >
+      <a href="#">&laquo;</a>
+      <a href="#">1</a>
+      <a class="active" href="#">2</a>
+      <a href="https://www.google.com">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#">6</a>
+      <a href="#">&raquo;</a>
+  </div>
+</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
